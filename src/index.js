@@ -1,8 +1,9 @@
-import './styles/index.css';
-import * as $ from './utils/dom';
-import IconCallOut from './assets/call-out.svg';
-import IconCitation from './assets/citation.svg';
-import IconDetails from './assets/details.svg';
+import "./styles/index.css";
+import * as $ from "./utils/dom";
+import IconCallOut from "./assets/call-out.svg";
+import IconCitation from "./assets/citation.svg";
+import IconDetails from "./assets/details.svg";
+import IconBlockQuotes from "./assets/block-quote";
 
 /**
  * Available predefined variants
@@ -12,19 +13,25 @@ export const TextVariant = {
    * For important information the author wants to emphasize.
    * Should be indicated by a border and some padding inside the border.
    */
-  CallOut: 'call-out',
+  CallOut: "call-out",
 
   /**
    * To cite some full-text from a different source without using the Quote tool provided by editor.js.
    * Should be indicated by all italics.
    */
-  Citation: 'citation',
+  Citation: "citation",
 
   /**
    * To add some information that is less important.
    * Should be indicated by a font about two sizes smaller than standard text.
    */
-  Details: 'details',
+  Details: "details",
+
+  /**
+   * For important information the author wants to emphasize.
+   * Should be indicated by a border and some padding inside the border.
+   */
+  BlockQuote: "block-quote",
 };
 
 /**
@@ -61,17 +68,22 @@ export default class TextVariantTune {
       {
         name: TextVariant.CallOut,
         icon: IconCallOut,
-        title: this.api.i18n.t('Call-out'),
+        title: this.api.i18n.t("Call-out"),
       },
       {
         name: TextVariant.Citation,
         icon: IconCitation,
-        title: this.api.i18n.t('Citation'),
+        title: this.api.i18n.t("Citation"),
       },
       {
         name: TextVariant.Details,
         icon: IconDetails,
-        title: this.api.i18n.t('Details'),
+        title: this.api.i18n.t("Details"),
+      },
+      {
+        name: TextVariant.BlockQuote,
+        icon: IconBlockQuotes,
+        title: this.api.i18n.t("Blockquote"),
       },
     ];
 
@@ -92,7 +104,7 @@ export default class TextVariantTune {
    */
   static get CSS() {
     return {
-      toggler: 'cdx-text-variant__toggler',
+      toggler: "cdx-text-variant__toggler",
     };
   }
 
@@ -102,17 +114,21 @@ export default class TextVariantTune {
    * @returns {Element}
    */
   render() {
-    const tuneWrapper = $.make('div', '');
+    const tuneWrapper = $.make("div", "");
 
     this.variants.forEach(({ name, icon, title }) => {
-      const toggler = $.make('div', [this.api.styles.settingsButton, TextVariantTune.CSS.toggler], {
-        innerHTML: icon,
-      });
+      const toggler = $.make(
+        "div",
+        [this.api.styles.settingsButton, TextVariantTune.CSS.toggler],
+        {
+          innerHTML: icon,
+        }
+      );
 
       toggler.dataset.name = name;
 
       this.api.tooltip.onHover(toggler, title, {
-        placement: 'top',
+        placement: "top",
         hidingDelay: 500,
       });
 
@@ -122,7 +138,7 @@ export default class TextVariantTune {
     /**
      * Delegate click event on all the controls
      */
-    this.api.listeners.on(tuneWrapper, 'click', (event) => {
+    this.api.listeners.on(tuneWrapper, "click", (event) => {
       this.tuneClicked(event);
     });
 
@@ -138,11 +154,13 @@ export default class TextVariantTune {
    */
   tuneClicked(event) {
     const tune = event.target.closest(`.${this.api.styles.settingsButton}`);
-    const isEnabled = tune.classList.contains(this.api.styles.settingsButtonActive);
+    const isEnabled = tune.classList.contains(
+      this.api.styles.settingsButtonActive
+    );
 
     tune.classList.toggle(this.api.styles.settingsButtonActive, !isEnabled);
 
-    this.variant = !isEnabled ? tune.dataset.name : '';
+    this.variant = !isEnabled ? tune.dataset.name : "";
   }
 
   /**
@@ -152,7 +170,7 @@ export default class TextVariantTune {
    * @returns {Element} - created wrapper
    */
   wrap(blockContent) {
-    this.wrapper = $.make('div');
+    this.wrapper = $.make("div");
 
     this.variant = this.data;
 
@@ -170,7 +188,10 @@ export default class TextVariantTune {
     this.data = name;
 
     this.variants.forEach((variant) => {
-      this.wrapper.classList.toggle(`cdx-text-variant--${variant.name}`, variant.name === this.data);
+      this.wrapper.classList.toggle(
+        `cdx-text-variant--${variant.name}`,
+        variant.name === this.data
+      );
     });
   }
 
@@ -180,6 +201,6 @@ export default class TextVariantTune {
    * @returns {string}
    */
   save() {
-    return this.data || '';
+    return this.data || "";
   }
 }

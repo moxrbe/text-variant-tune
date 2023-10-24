@@ -6,6 +6,12 @@
   margin-top: 0.6em;
   margin-bottom: 0.6em;
 }
+.cdx-text-variant--block-quote .ce-block__content {
+  border: 2px solid #d4dae2;
+  padding: 0 16px;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+}
 
 .cdx-text-variant--citation {
   font-style: italic;
